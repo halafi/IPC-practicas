@@ -2,6 +2,10 @@ package model;
 
 import es.upv.inf.Product;
 import java.util.Objects;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /**
  * Class representing PC component.
@@ -10,30 +14,27 @@ import java.util.Objects;
  */
 public class Component {
 
-    private Product product;
-    private int quantity;
+    private final ObjectProperty<Product> product = new SimpleObjectProperty();
+    private final IntegerProperty quantity = new SimpleIntegerProperty();
+    
+    public Component(Product product, Integer quantity) {
+        this.product.setValue(product);
+        this.quantity.setValue(quantity);
+    }
 
-    public Product getProduct() {
+    public ObjectProperty<Product> getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getQuantity() {
+    public IntegerProperty getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.product);
-        hash = 37 * hash + this.quantity;
+        hash = 23 * hash + Objects.hashCode(this.product);
+        hash = 23 * hash + Objects.hashCode(this.quantity);
         return hash;
     }
 
@@ -49,7 +50,7 @@ public class Component {
         if (!Objects.equals(this.product, other.product)) {
             return false;
         }
-        if (this.quantity != other.quantity) {
+        if (!Objects.equals(this.quantity, other.quantity)) {
             return false;
         }
         return true;

@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Pc;
 
 /**
  * FXML Controller class
@@ -37,7 +38,7 @@ public class MainWindowController implements Initializable {
             FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/configurationWindow.fxml"));
             Parent root = (Parent) myLoader.load();
             ConfigurationWindowController configurationWindowController = myLoader.<ConfigurationWindowController>getController();
-            configurationWindowController.initStage(primaryStage);
+            configurationWindowController.initStage(primaryStage, new Pc());
             
             Scene scene = new Scene(root);
             
