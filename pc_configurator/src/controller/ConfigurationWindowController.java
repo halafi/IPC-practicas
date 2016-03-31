@@ -1,18 +1,22 @@
 package controller;
 
 import es.upv.inf.Product;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Component;
 import model.Pc;
@@ -125,6 +129,20 @@ public class ConfigurationWindowController implements Initializable {
 
     @FXML
     private void odAddComponent(ActionEvent event) {
+        try {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/searchComponents.fxml"));
+            Parent root = (Parent) myLoader.load();
+            SearchComponentsController searchController = myLoader.<SearchComponentsController>getController();
+            Stage modalStage = new Stage();
+            searchController.initStage(modalStage);
+            
+            Scene scene = new Scene(root);
+            modalStage.setScene(scene);
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
