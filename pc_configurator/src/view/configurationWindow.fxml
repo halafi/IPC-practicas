@@ -48,7 +48,17 @@
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" onAction="#odAddComponent" text="Add Component">
+            <Button fx:id="removeComponentButton" mnemonicParsing="false" onAction="#onRemoveComponent" text="Remove">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="editComponentButton" mnemonicParsing="false" onAction="#onEditComponent" text="Edit">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="addComponentButton" mnemonicParsing="false" onAction="#odAddComponent" text="Add Component">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

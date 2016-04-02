@@ -4,6 +4,7 @@ import es.upv.inf.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,7 +54,12 @@ public class ConfigurationWindowController implements Initializable {
     private Button continueButton;
     @FXML
     private Button cancelButton;
-
+    @FXML
+    private Button removeComponentButton;
+    @FXML
+    private Button editComponentButton;
+    @FXML
+    private Button addComponentButton;
 
     /**
      * Initializes the controller class.
@@ -109,9 +115,13 @@ public class ConfigurationWindowController implements Initializable {
             };
         });
 
-        /*saveButton.disableProperty().bind(
-         Bindings.equal(0, componentTable.getItems().size())
-         );*/
+        removeComponentButton.disableProperty().bind(
+                Bindings.equal(-1, componentTable.getSelectionModel().selectedIndexProperty())
+        );
+
+        editComponentButton.disableProperty().bind(
+                Bindings.equal(-1, componentTable.getSelectionModel().selectedIndexProperty())
+        );
     }
 
     public void initStage(Stage stage, Pc pc) {
@@ -135,7 +145,7 @@ public class ConfigurationWindowController implements Initializable {
             SearchComponentsController searchController = myLoader.<SearchComponentsController>getController();
             Stage modalStage = new Stage();
             searchController.initStage(modalStage);
-            
+
             Scene scene = new Scene(root);
             modalStage.setScene(scene);
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -157,6 +167,14 @@ public class ConfigurationWindowController implements Initializable {
     private void onCancel(ActionEvent event) {
         this.primaryStage.setTitle(this.previousSceneTitle);
         this.primaryStage.setScene(this.previousScene);
+    }
+
+    @FXML
+    private void onRemoveComponent(ActionEvent event) {
+    }
+
+    @FXML
+    private void onEditComponent(ActionEvent event) {
     }
 
 }

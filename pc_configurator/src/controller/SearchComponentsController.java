@@ -3,9 +3,6 @@ package controller;
 import es.upv.inf.Product;
 import es.upv.inf.Product.Category;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -17,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -47,17 +45,19 @@ public class SearchComponentsController implements Initializable {
     private TableColumn<Product, Category> categoryColumn;
 
     @FXML
-    private Button cancelButton;
-    @FXML
     private Button addButton;
     @FXML
-    private TextField nameField;
+    private Button cancelButton;
     @FXML
     private ComboBox<Category> categoryComboBox;
     @FXML
-    private TextField priceField;
+    private TextField descriptionField;
     @FXML
-    private TextField stockField;
+    private TextField minPriceField;
+    @FXML
+    private TextField maxPriceField;
+    @FXML
+    private CheckBox inStockCheckbox;
 
     /**
      * Initializes the controller class.
@@ -78,39 +78,181 @@ public class SearchComponentsController implements Initializable {
                 Bindings.equal(-1,
                         productTable.getSelectionModel().selectedIndexProperty()));
 
-        products = FXCollections.observableArrayList(DatabaseService.getAllProducts());
+        categoryComboBox.setValue(Category.SPEAKER);
+        products = FXCollections.observableArrayList(DatabaseService.getProductByCategory(categoryComboBox.getValue()));
         productTable.setItems(products);
 
         categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
         categoryComboBox.valueProperty().addListener(new ChangeListener<Category>() {
             @Override
             public void changed(ObservableValue<? extends Category> observable, Category oldValue, Category newValue) {
-                products.setAll(DatabaseService.getProductByCategory(newValue));
+                boolean searchByDesc = !descriptionField.textProperty().get().equals("");
+                boolean searchByMinPrice = !minPriceField.textProperty().get().equals("");
+                boolean searchByMaxPrice = !maxPriceField.textProperty().get().equals("");
+                if (!searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                    if (!searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategory(categoryComboBox.getValue()));
+                    } else if (!searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    } else if (searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                    }
+                }
+                if (searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                    if (!searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndDescription(categoryComboBox.getValue(), descriptionField.getText(), inStockCheckbox.isSelected()));
+                    } else if (!searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    } else if (searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                    }
+                }
+                if (!searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                    products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                }
+                if (searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                    products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                }
             }
         });
-        /*conversionSlider.valueProperty().addListener(new ChangeListener<Number>() {
-         @Override
-         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-         conversionRate.textProperty().setValue(
-         String.format("%.2f", conversionSlider.getValue())
-         );
-         if (automaticConversionCheckbox.isSelected() && input.getText() != null && !input.getText().equals("")) {
-         convertInput(null);
-         }
-         }
-         });
-         automaticConversionCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-         @Override
-         public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-         if (newValue) {
-         convertInput(null);
-         convertBtn.setDisable(true);
-         } else {
-         convertBtn.setDisable(false);
-         }
-         }
-            
-         });*/
+        descriptionField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                boolean searchByDesc = !descriptionField.textProperty().get().equals("");
+                boolean searchByMinPrice = !minPriceField.textProperty().get().equals("");
+                boolean searchByMaxPrice = !maxPriceField.textProperty().get().equals("");
+                if (!searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                    if (!searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategory(categoryComboBox.getValue()));
+                    } else if (!searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    } else if (searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                    }
+                }
+                if (searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                    if (!searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndDescription(categoryComboBox.getValue(), descriptionField.getText(), inStockCheckbox.isSelected()));
+                    } else if (!searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    } else if (searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                    }
+                }
+                if (!searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                    products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                }
+                if (searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                    products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                }
+            }
+        });
+        inStockCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                boolean searchByDesc = !descriptionField.textProperty().get().equals("");
+                boolean searchByMinPrice = !minPriceField.textProperty().get().equals("");
+                boolean searchByMaxPrice = !maxPriceField.textProperty().get().equals("");
+                if (!searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                    if (!searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategory(categoryComboBox.getValue()));
+                    } else if (!searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    } else if (searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                    }
+                }
+                if (searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                    if (!searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndDescription(categoryComboBox.getValue(), descriptionField.getText(), inStockCheckbox.isSelected()));
+                    } else if (!searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    } else if (searchByMinPrice && !searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                    }
+                }
+                if (!searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                    products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                }
+                if (searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                    products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                }
+            }
+        });
+        minPriceField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    minPriceField.setText(oldValue);
+                    minPriceField.positionCaret(minPriceField.getLength());
+                } else {
+                    boolean searchByDesc = !descriptionField.textProperty().get().equals("");
+                    boolean searchByMinPrice = !minPriceField.textProperty().get().equals("");
+                    boolean searchByMaxPrice = !maxPriceField.textProperty().get().equals("");
+                    if (!searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                        if (!searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategory(categoryComboBox.getValue()));
+                        } else if (!searchByMinPrice && searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                        } else if (searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                        }
+                    }
+                    if (searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                        if (!searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryAndDescription(categoryComboBox.getValue(), descriptionField.getText(), inStockCheckbox.isSelected()));
+                        } else if (!searchByMinPrice && searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                        } else if (searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                        }
+                    }
+                    if (!searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    }
+                    if (searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    }
+                }
+            }
+        });
+        maxPriceField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    maxPriceField.setText(oldValue);
+                    maxPriceField.positionCaret(maxPriceField.getLength());
+                } else {
+                    boolean searchByDesc = !descriptionField.textProperty().get().equals("");
+                    boolean searchByMinPrice = !minPriceField.textProperty().get().equals("");
+                    boolean searchByMaxPrice = !maxPriceField.textProperty().get().equals("");
+                    if (!searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                        if (!searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategory(categoryComboBox.getValue()));
+                        } else if (!searchByMinPrice && searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                        } else if (searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                        }
+                    }
+                    if (searchByDesc && (!searchByMinPrice || !searchByMaxPrice)) {
+                        if (!searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryAndDescription(categoryComboBox.getValue(), descriptionField.getText(), inStockCheckbox.isSelected()));
+                        } else if (!searchByMinPrice && searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), 0, Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                        } else if (searchByMinPrice && !searchByMaxPrice) {
+                            products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), 9999, inStockCheckbox.isSelected()));
+                        }
+                    }
+                    if (!searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryAndPrice(categoryComboBox.getValue(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    }
+                    if (searchByDesc && searchByMinPrice && searchByMaxPrice) {
+                        products.setAll(DatabaseService.getProductByCategoryDescriptionAndPrice(categoryComboBox.getValue(), descriptionField.getText(), Double.parseDouble(minPriceField.textProperty().get()), Double.parseDouble(maxPriceField.textProperty().get()), inStockCheckbox.isSelected()));
+                    }
+                }
+            }
+        });
     }
 
     void initStage(Stage modalStage) {
