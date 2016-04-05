@@ -8,9 +8,12 @@
             <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/controller/MainWindowController.java</file>
             <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/model/Pc.java</file>
             <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/model/Component.java</file>
+            <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/view/editComponentWindow.fxml</file>
             <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/view/configurationWindow.fxml</file>
             <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/view/searchComponents.fxml</file>
             <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/controller/SearchComponentsController.java</file>
+            <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/controller/EditComponentWindowController.java</file>
+            <file>file:/home/filip/NetBeansProjects/hci/pc_configurator/src/services/DatabaseService.java</file>
         </group>
     </open-files>
 </project-private>

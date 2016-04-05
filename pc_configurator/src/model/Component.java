@@ -14,20 +14,28 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class Component {
 
-    private final ObjectProperty<Product> product = new SimpleObjectProperty();
-    private final IntegerProperty quantity = new SimpleIntegerProperty();
-    
+    private ObjectProperty<Product> product = new SimpleObjectProperty();
+    private IntegerProperty quantity = new SimpleIntegerProperty();
+
     public Component(Product product, Integer quantity) {
         this.product.setValue(product);
         this.quantity.setValue(quantity);
     }
 
-    public ObjectProperty<Product> getProduct() {
+    public ObjectProperty<Product> getProductProperty() {
         return product;
     }
 
-    public IntegerProperty getQuantity() {
+    public IntegerProperty getQuantityProperty() {
         return quantity;
+    }
+
+    public void setProduct(ObjectProperty<Product> product) {
+        this.product = product;
+    }
+
+    public void setQuantity(IntegerProperty quantity) {
+        this.quantity = quantity;
     }
 
     @Override

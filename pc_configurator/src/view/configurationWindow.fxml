@@ -12,10 +12,11 @@
    <center>
       <TableView fx:id="componentTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="descriptionColumn" minWidth="150.0" prefWidth="150.0" text="Description" />
+          <TableColumn fx:id="descriptionColumn" minWidth="200.0" prefWidth="200.0" text="Description" />
             <TableColumn fx:id="categoryColumn" minWidth="150.0" prefWidth="150.0" text="Category" />
-            <TableColumn fx:id="amountColumn" minWidth="150.0" prefWidth="150.0" text="Amount" />
-            <TableColumn fx:id="priceColumn" minWidth="150.0" prefWidth="150.0" text="Price w/o VAT" />
+            <TableColumn fx:id="stockColumn" minWidth="75.0" prefWidth="75.0" text="Stock" />
+            <TableColumn fx:id="priceColumn" minWidth="75.0" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="amountColumn" minWidth="100.0" prefWidth="100.0" text="Quantity" />
         </columns>
       </TableView>
    </center>
@@ -43,7 +44,7 @@
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="pcNameField" minWidth="200.0" prefWidth="200.0" promptText="PC name">
+            <TextField fx:id="pcNameField" minWidth="320.0" prefWidth="320.0" promptText="PC name">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

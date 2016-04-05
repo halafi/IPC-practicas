@@ -1,8 +1,10 @@
 package controller;
 
 import es.upv.inf.Product;
+import es.upv.inf.Product.Category;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -17,10 +19,12 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Component;
 import model.Pc;
+import services.DatabaseService;
 
 /**
  * FXML Controller class
@@ -38,6 +42,8 @@ public class ConfigurationWindowController implements Initializable {
     private TableView<Component> componentTable;
     @FXML
     private TableColumn<Component, Product> descriptionColumn;
+    @FXML
+    private TableColumn<Component, Product> stockColumn;
     @FXML
     private TableColumn<Component, Product> categoryColumn;
     @FXML
@@ -69,9 +75,9 @@ public class ConfigurationWindowController implements Initializable {
         descriptionColumn.textProperty().set("Description");
         categoryColumn.textProperty().set("Category");
         amountColumn.textProperty().set("Quantity");
-        priceColumn.textProperty().set("Price w/o VAT");
+        priceColumn.textProperty().set("Price");
 
-        descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getProduct());
+        descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
         descriptionColumn.setCellFactory(v -> {
             return new TableCell<Component, Product>() {
                 @Override
@@ -85,7 +91,7 @@ public class ConfigurationWindowController implements Initializable {
                 }
             };
         });
-        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getProduct());
+        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
         categoryColumn.setCellFactory(v -> {
             return new TableCell<Component, Product>() {
                 @Override
@@ -99,8 +105,8 @@ public class ConfigurationWindowController implements Initializable {
                 }
             };
         });
-        amountColumn.setCellValueFactory(cellData -> cellData.getValue().getQuantity().asObject());
-        priceColumn.setCellValueFactory(cellData -> cellData.getValue().getProduct());
+        amountColumn.setCellValueFactory(cellData -> cellData.getValue().getQuantityProperty().asObject());
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
         priceColumn.setCellFactory(v -> {
             return new TableCell<Component, Product>() {
                 @Override
@@ -110,6 +116,20 @@ public class ConfigurationWindowController implements Initializable {
                         setText(null);
                     } else {
                         setText(String.valueOf(item.getPrice()));
+                    }
+                }
+            };
+        });
+        stockColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
+        stockColumn.setCellFactory(v -> {
+            return new TableCell<Component, Product>() {
+                @Override
+                protected void updateItem(Product item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                    } else {
+                        setText(String.valueOf(item.getStock()));
                     }
                 }
             };
@@ -132,8 +152,12 @@ public class ConfigurationWindowController implements Initializable {
         this.previousSceneTitle = stage.getTitle();
         this.primaryStage.setTitle("TechDog PC Configurator");
         ObservableList<Component> components = this.pc.getComponents();
-        components.add(new Component(new Product("SoundMaster stereo", 500, 5, Product.Category.SPEAKER), 8));
-        components.add(new Component(new Product("Kingston 8GB", 200, 7, Product.Category.RAM), 2));
+        List<Product> cases = DatabaseService.getProductByCategory(Category.CASE);
+        List<Product> speakers = DatabaseService.getProductByCategory(Category.SPEAKER);
+        List<Product> cpus = DatabaseService.getProductByCategory(Category.CPU);
+        components.add(new Component(cases.get(0), 1));
+        components.add(new Component(speakers.get(0), 1));
+        components.add(new Component(cpus.get(0), 1));
         pc.setComponents(components);
     }
 
@@ -171,10 +195,27 @@ public class ConfigurationWindowController implements Initializable {
 
     @FXML
     private void onRemoveComponent(ActionEvent event) {
+        pc.getComponents().remove(componentTable.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     private void onEditComponent(ActionEvent event) {
+        try {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/editComponentWindow.fxml"));
+            Parent root = (Parent) myLoader.load();
+            EditComponentWindowController editComponentController = myLoader.<EditComponentWindowController>getController();
+            Stage modalStage = new Stage();
+            editComponentController.initStage(modalStage, pc.getComponents().get(componentTable.getSelectionModel().getSelectedIndex()), componentTable.getColumns().get(0));
+
+            Scene scene = new Scene(root);
+            modalStage.setScene(scene);
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.show();
+            /*componentTable.getColumns().get(0).setVisible(false);
+            componentTable.getColumns().get(0).setVisible(true);*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

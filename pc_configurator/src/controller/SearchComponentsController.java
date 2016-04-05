@@ -257,6 +257,7 @@ public class SearchComponentsController implements Initializable {
 
     void initStage(Stage modalStage) {
         this.stage = modalStage;
+        this.stage.setTitle("Search Components");
     }
 
     @FXML
