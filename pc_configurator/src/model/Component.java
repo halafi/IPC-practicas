@@ -1,9 +1,10 @@
 package model;
 
 import es.upv.inf.Product;
-import java.util.Objects;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -37,36 +38,12 @@ public class Component {
     public void setQuantity(IntegerProperty quantity) {
         this.quantity = quantity;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.product);
-        hash = 23 * hash + Objects.hashCode(this.quantity);
-        return hash;
+    
+    public DoubleProperty getTotalPriceWithoutVAT() {
+        return new SimpleDoubleProperty(quantity.get() * product.get().getPrice());
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Component other = (Component) obj;
-        if (!Objects.equals(this.product, other.product)) {
-            return false;
-        }
-        if (!Objects.equals(this.quantity, other.quantity)) {
-            return false;
-        }
-        return true;
+    
+    public DoubleProperty getTotalPriceWithVAT() {
+        return new SimpleDoubleProperty(quantity.get() * product.get().getPrice() * 1.21);
     }
-
-    @Override
-    public String toString() {
-        return "Component{" + "product=" + product + ", quantity=" + quantity + '}';
-    }
-
 }

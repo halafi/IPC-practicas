@@ -50,6 +50,8 @@ public class ConfigurationWindowController implements Initializable {
     private TableColumn<Component, Integer> amountColumn;
     @FXML
     private TableColumn<Component, Product> priceColumn;
+    @FXML
+    private TableColumn<Component, Double> totalPriceColumn;
 
     @FXML
     private TextField pcNameField;
@@ -66,6 +68,7 @@ public class ConfigurationWindowController implements Initializable {
     private Button editComponentButton;
     @FXML
     private Button addComponentButton;
+    
 
     /**
      * Initializes the controller class.
@@ -75,7 +78,8 @@ public class ConfigurationWindowController implements Initializable {
         descriptionColumn.textProperty().set("Description");
         categoryColumn.textProperty().set("Category");
         amountColumn.textProperty().set("Quantity");
-        priceColumn.textProperty().set("Price");
+        priceColumn.textProperty().set("Unit Price");
+        totalPriceColumn.textProperty().set("Total Price");
 
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
         descriptionColumn.setCellFactory(v -> {
@@ -120,6 +124,21 @@ public class ConfigurationWindowController implements Initializable {
                 }
             };
         });
+        totalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("getTotalPriceWithoutVAT"));
+        /*totalPriceColumn.setCellFactory(v -> {
+            return new TableCell<Component, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                    } else {
+                        System.out.println(item);
+                        setText(String.valueOf(item.getTotalPriceWithoutVAT()));
+                    }
+                }
+            };
+        });*/
         stockColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
         stockColumn.setCellFactory(v -> {
             return new TableCell<Component, Product>() {
