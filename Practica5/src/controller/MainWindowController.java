@@ -36,21 +36,25 @@ public class MainWindowController implements Initializable {
     @FXML
     private RadioMenuItem buyOnEbayCheck;
 
+    private ResourceBundle rb;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        statusBarText.setText("Application started");
+        this.rb = rb;
+        
+        statusBarText.setText(rb.getString("text.applicationStarted"));
 
     }
 
     @FXML
     private void onClose(ActionEvent event) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText("You are about to leave the program");
-        alert.setContentText("Are you sure you want to leave?\n\n");
+        alert.setTitle(rb.getString("alert.confirmation"));
+        alert.setHeaderText(rb.getString("alert.aboutToLeave"));
+        alert.setContentText(rb.getString("alert.sureToLeave") + "\n\n");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             System.exit(0);
@@ -61,15 +65,15 @@ public class MainWindowController implements Initializable {
     private void onAmazonClick(ActionEvent event) {
         if (buyOnAmazonCheck.isSelected()) {
             Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("You have completed your purchase");
-            alert.setContentText("You have bought on Amazon");
+            alert.setTitle(rb.getString("alert.confirmation"));
+            alert.setHeaderText(rb.getString("alert.purchaseCompleted"));
+            alert.setContentText(rb.getString("alert.purchaseCompletedAmazon"));
             alert.showAndWait();
         } else {
             Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Selection Error");
-            alert.setHeaderText("You cannot buy on Amazon");
-            alert.setContentText("Please change the current selection in the options menu");
+            alert.setTitle(rb.getString("alert.selectionError"));
+            alert.setHeaderText(rb.getString("alert.purchaseFailedAmazon"));
+            alert.setContentText(rb.getString("alert.changeSelection"));
             alert.showAndWait();
         }
     }
@@ -81,12 +85,12 @@ public class MainWindowController implements Initializable {
         choices.add("Porthos' blog");
         choices.add("Aramis' blog");
         ChoiceDialog<String> dialog = new ChoiceDialog<>("Athos' blog", choices);
-        dialog.setTitle("Select a blog");
-        dialog.setHeaderText("Which blog do you want to visit?");
-        dialog.setContentText("Choose:");
+        dialog.setTitle(rb.getString("alert.selectBlog"));
+        dialog.setHeaderText(rb.getString("alert.chooseBlog"));
+        dialog.setContentText(rb.getString("text.choose"));
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-            statusBarText.setText("Visiting " + result.get());
+            statusBarText.setText(rb.getString("label.visiting") + result.get());
         }
         //result.ifPresent(number -> System.out.println("Your choice: " + number));
     }
@@ -95,15 +99,15 @@ public class MainWindowController implements Initializable {
     private void onEbayClick(ActionEvent event) {
         if (buyOnEbayCheck.isSelected()) {
             Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("You have completed your purchase");
-            alert.setContentText("You have bought on Ebay");
+            alert.setTitle(rb.getString("alert.confirmation"));
+            alert.setHeaderText(rb.getString("alert.purchaseCompleted"));
+            alert.setContentText(rb.getString("alert.purchaseCompletedEbay"));
             alert.showAndWait();
         } else {
             Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Selection Error");
-            alert.setHeaderText("You cannot buy on Ebay");
-            alert.setContentText("Please change the current selection in the options menu");
+            alert.setTitle(rb.getString("alert.selectionError"));
+            alert.setHeaderText(rb.getString("alert.purchaseFailedEbay"));
+            alert.setContentText(rb.getString("alert.changeSelection"));
             alert.showAndWait();
         }
     }
@@ -111,24 +115,24 @@ public class MainWindowController implements Initializable {
     @FXML
     private void onFacebookClick(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog("John"); // Default value
-        dialog.setTitle("Introduce your name");
-        dialog.setHeaderText("Which user do you want to use to write on Facebook?");
-        dialog.setContentText("Enter your name:");
+        dialog.setTitle(rb.getString("alert.introduceName"));
+        dialog.setHeaderText(rb.getString("alert.whichUser") + "Facebook?");
+        dialog.setContentText(rb.getString("alert.enterName"));
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-            statusBarText.setText("Message sent as " + result.get());
+            statusBarText.setText(rb.getString("label.messageSent") + result.get());
         }
     }
 
     @FXML
     private void onGooglePlusClick(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog("John"); // Default value
-        dialog.setTitle("Introduce your name");
-        dialog.setHeaderText("Which user do you want to use to write on Google+?");
-        dialog.setContentText("Enter your name:");
+        dialog.setTitle(rb.getString("alert.introduceName"));
+        dialog.setHeaderText(rb.getString("alert.whichUser") + "Google+?");
+        dialog.setContentText(rb.getString("alert.enterName"));
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-            statusBarText.setText("Message sent as " + result.get());
+            statusBarText.setText(rb.getString("label.messageSent") + result.get());
         }
     }
 

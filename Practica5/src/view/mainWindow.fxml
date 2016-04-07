@@ -18,12 +18,12 @@
    <children>
       <MenuBar fx:id="menuBar">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="%menu.File">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#onClose" text="%menuItem.Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Launch">
+          <Menu mnemonicParsing="false" text="%menu.Launch">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onAmazonClick" text="Amazon" />
                   <MenuItem mnemonicParsing="false" onAction="#onBloggerClick" text="Blogger" />
@@ -32,9 +32,9 @@
                   <MenuItem mnemonicParsing="false" onAction="#onGooglePlusClick" text="Google+" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Options">
+          <Menu mnemonicParsing="false" text="%menu.Options">
             <items>
-                  <Menu mnemonicParsing="false" text="Buy on">
+                  <Menu mnemonicParsing="false" text="%menu.BuyOn">
                     <items>
                         <RadioMenuItem fx:id="buyOnAmazonCheck" mnemonicParsing="false" selected="true" text="Amazon">
                            <toggleGroup>
