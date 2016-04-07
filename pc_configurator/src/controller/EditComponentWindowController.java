@@ -1,6 +1,5 @@
 package controller;
 
-import es.upv.inf.Product;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;

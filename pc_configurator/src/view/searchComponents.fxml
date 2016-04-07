@@ -98,7 +98,7 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" minHeight="50.0" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Cancel">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Close">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

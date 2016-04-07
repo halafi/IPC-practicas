@@ -2,6 +2,7 @@ package controller;
 
 import es.upv.inf.Product;
 import es.upv.inf.Product.Category;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
@@ -11,8 +12,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -20,7 +24,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Pc;
 import services.DatabaseService;
 
 /**
@@ -32,6 +38,7 @@ public class SearchComponentsController implements Initializable {
 
     private ObservableList<Product> products = null;
     private Stage stage;
+    private Pc pc;
 
     @FXML
     private TableView<Product> productTable;
@@ -255,9 +262,10 @@ public class SearchComponentsController implements Initializable {
         });
     }
 
-    void initStage(Stage modalStage) {
+    void initStage(Stage modalStage, Pc pc) {
         this.stage = modalStage;
         this.stage.setTitle("Search Components");
+        this.pc = pc;
     }
 
     @FXML
@@ -268,6 +276,20 @@ public class SearchComponentsController implements Initializable {
 
     @FXML
     private void onAdd(ActionEvent event) {
+        try {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/addComponentWindow.fxml"));
+            Parent root = (Parent) myLoader.load();
+            AddComponentWindowController addComponentController = myLoader.<AddComponentWindowController>getController();
+            Stage modalStage = new Stage();
+            addComponentController.initStage(modalStage, products.get(productTable.getSelectionModel().getSelectedIndex()), pc);
+            
+            Scene scene = new Scene(root);
+            modalStage.setScene(scene);
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

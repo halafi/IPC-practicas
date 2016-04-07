@@ -2,9 +2,11 @@ package controller;
 
 import es.upv.inf.Product;
 import es.upv.inf.Product.Category;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -14,14 +16,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import model.Component;
 import model.Pc;
 import services.DatabaseService;
@@ -50,8 +57,6 @@ public class ConfigurationWindowController implements Initializable {
     private TableColumn<Component, Integer> amountColumn;
     @FXML
     private TableColumn<Component, Product> priceColumn;
-    @FXML
-    private TableColumn<Component, Double> totalPriceColumn;
 
     @FXML
     private TextField pcNameField;
@@ -68,7 +73,6 @@ public class ConfigurationWindowController implements Initializable {
     private Button editComponentButton;
     @FXML
     private Button addComponentButton;
-    
 
     /**
      * Initializes the controller class.
@@ -79,7 +83,6 @@ public class ConfigurationWindowController implements Initializable {
         categoryColumn.textProperty().set("Category");
         amountColumn.textProperty().set("Quantity");
         priceColumn.textProperty().set("Unit Price");
-        totalPriceColumn.textProperty().set("Total Price");
 
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
         descriptionColumn.setCellFactory(v -> {
@@ -124,21 +127,6 @@ public class ConfigurationWindowController implements Initializable {
                 }
             };
         });
-        totalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("getTotalPriceWithoutVAT"));
-        /*totalPriceColumn.setCellFactory(v -> {
-            return new TableCell<Component, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        System.out.println(item);
-                        setText(String.valueOf(item.getTotalPriceWithoutVAT()));
-                    }
-                }
-            };
-        });*/
         stockColumn.setCellValueFactory(cellData -> cellData.getValue().getProductProperty());
         stockColumn.setCellFactory(v -> {
             return new TableCell<Component, Product>() {
@@ -187,7 +175,7 @@ public class ConfigurationWindowController implements Initializable {
             Parent root = (Parent) myLoader.load();
             SearchComponentsController searchController = myLoader.<SearchComponentsController>getController();
             Stage modalStage = new Stage();
-            searchController.initStage(modalStage);
+            searchController.initStage(modalStage, pc);
 
             Scene scene = new Scene(root);
             modalStage.setScene(scene);
@@ -200,10 +188,56 @@ public class ConfigurationWindowController implements Initializable {
 
     @FXML
     private void onSave(ActionEvent event) {
+        // Save to disk
+        try {
+            File file = new File("test.xml"); // file name
+            JAXBContext jaxbContext = JAXBContext.newInstance(Pc.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(pc, file); // save to a file
+            jaxbMarshaller.marshal(pc, System.out); // echo to the console
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void onContinue(ActionEvent event) {
+        boolean hasMB = false, hasCPU = false, hasRAM = false, hasGPU = false, hasStorage = false, hasCase = false;
+        for (Component c : pc.getComponents()) {
+            Category cat = c.getProductProperty().get().getCategory();
+            switch (cat) {
+                case CASE:
+                    hasCase = true;
+                    break;
+                case MOTHERBOARD:
+                    hasMB = true;
+                    break;
+                case CPU:
+                    hasCPU = true;
+                    break;
+                case GPU:
+                    hasGPU = true;
+                    break;
+                case HDD:
+                    hasStorage = true;
+                    break;
+                case HDD_SSD:
+                    hasStorage = true;
+                    break;
+                case RAM:
+                    hasRAM = true;
+                    break;
+            }
+        }
+        if (!hasMB || !hasCPU || !hasCase || !hasGPU || !hasRAM || !hasStorage) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setHeaderText("Missing one or more crucial compoment(s)");
+            alert.setContentText("PC needs at least one:\n* Motherboard\n* Case\n* CPU\n* RAM\n* GPU\n* HDD or SDD");
+            alert.showAndWait();
+        } else {
+
+        }
     }
 
     @FXML
@@ -214,7 +248,11 @@ public class ConfigurationWindowController implements Initializable {
 
     @FXML
     private void onRemoveComponent(ActionEvent event) {
-        pc.getComponents().remove(componentTable.getSelectionModel().getSelectedIndex());
+        Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to remove this component?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            pc.getComponents().remove(componentTable.getSelectionModel().getSelectedIndex());
+        }
     }
 
     @FXML
@@ -230,8 +268,6 @@ public class ConfigurationWindowController implements Initializable {
             modalStage.setScene(scene);
             modalStage.initModality(Modality.APPLICATION_MODAL);
             modalStage.show();
-            /*componentTable.getColumns().get(0).setVisible(false);
-            componentTable.getColumns().get(0).setVisible(true);*/
         } catch (IOException e) {
             e.printStackTrace();
         }

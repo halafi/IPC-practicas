@@ -17,7 +17,6 @@
             <TableColumn fx:id="stockColumn" minWidth="85.0" prefWidth="85.0" text="Stock" />
             <TableColumn fx:id="priceColumn" minWidth="85.0" prefWidth="85.0" text="Unit Price" />
             <TableColumn fx:id="amountColumn" minWidth="100.0" prefWidth="100.0" text="Quantity" />
-            <TableColumn fx:id="totalPriceColumn" minWidth="95.0" prefWidth="95.0" text="Total Price" />
         </columns>
       </TableView>
    </center>

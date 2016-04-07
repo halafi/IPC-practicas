@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Class representing PC component.
@@ -37,13 +38,5 @@ public class Component {
 
     public void setQuantity(IntegerProperty quantity) {
         this.quantity = quantity;
-    }
-    
-    public DoubleProperty getTotalPriceWithoutVAT() {
-        return new SimpleDoubleProperty(quantity.get() * product.get().getPrice());
-    }
-    
-    public DoubleProperty getTotalPriceWithVAT() {
-        return new SimpleDoubleProperty(quantity.get() * product.get().getPrice() * 1.21);
     }
 }
