@@ -1,7 +1,6 @@
 package controller;
 
 import es.upv.inf.Product;
-import es.upv.inf.Product.Category;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -79,7 +78,7 @@ public class AddComponentWindowController implements Initializable {
         for (Component c : pc.getComponents()) {
             if (c.getProductProperty().get().getCategory() == product.getCategory()) {
                 valid = false;
-                Alert alert = new Alert(AlertType.ERROR, "Component with category " + product.getCategory() + " is already in the budget");
+                Alert alert = new Alert(AlertType.ERROR, product.getCategory() + " is already in the budget");
                 alert.showAndWait();
                 break;
             }

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pc>
+    <components>
+        <product>
+            <category>SPEAKER</category>
+            <description>woxter altavoces big bass 95 negro 2.0</description>
+            <price>22.81</price>
+            <stock>21</stock>
+        </product>
+        <quantity>2</quantity>
+    </components>
+    <components>
+        <product>
+            <category>HDD</category>
+            <description>seagate 1tb sata3 7200 64mb barracuda</description>
+            <price>43.31</price>
+            <stock>182</stock>
+        </product>
+        <quantity>2</quantity>
+    </components>
+    <components>
+        <product>
+            <category>HDD_SSD</category>
+            <description>hd 2 5 ssd 120gb sata 3 kingston ssdnow v300</description>
+            <price>45.37</price>
+            <stock>13</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>POWER_SUPPLY</category>
+            <description>l link fuente al. 500w atx ce piv</description>
+            <price>11.49</price>
+            <stock>524</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>DVD_WRITER</category>
+            <description>lg dvd.rw interna 24x bulk sata sin software</description>
+            <price>12.07</price>
+            <stock>276</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>RAM</category>
+            <description>modulo ddr4 8gb pc2133 kingston hyperx fury black</description>
+            <price>43.22</price>
+            <stock>41</stock>
+        </product>
+        <quantity>4</quantity>
+    </components>
+    <components>
+        <product>
+            <category>SCREEN</category>
+            <description>asus 23.6 vs247hr wled fhd 2ms 1000.1 vga+dvi+hdmi</description>
+            <price>124.71</price>
+            <stock>6</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>MULTIREADER</category>
+            <description>card reader interno tacens anima acr2 con usb3.0</description>
+            <price>6.94</price>
+            <stock>22</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>MOTHERBOARD</category>
+            <description>msi placa base a78m e45n v2 matx fm2</description>
+            <price>52.73</price>
+            <stock>28</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>CPU</category>
+            <description>intel core i3.4170 3.7ghz s1150 3mb</description>
+            <price>106.78</price>
+            <stock>25</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>MOUSE</category>
+            <description>logitech r400 wireless presenter puntero laser</description>
+            <price>51.24</price>
+            <stock>20</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>GPU</category>
+            <description>gigabyte  vga nvidia gt 210 1gb ddr3</description>
+            <price>31.07</price>
+            <stock>74</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>KEYBOARD</category>
+            <description>teclado ewent usb ps2</description>
+            <price>7.19</price>
+            <stock>168</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>CASE</category>
+            <description>coolbox f70 caja atx semitorre 500w usb3.0</description>
+            <price>28.35</price>
+            <stock>18</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>FAN</category>
+            <description>nox ventilador coolfan 1200rpm 12cm + 4 led azul</description>
+            <price>5.79</price>
+            <stock>22</stock>
+        </product>
+        <quantity>4</quantity>
+    </components>
+    <name>RandomPc</name>
+</pc>

@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -11,12 +10,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author filip
  */
-@XmlRootElement
+@XmlRootElement(name = "pc")
 public class Pc {
 
     private String name;
-
-    
     private ObservableList<Component> components;
 
     public Pc() {
@@ -32,7 +29,6 @@ public class Pc {
         this.name = name;
     }
 
-    @XmlElement(name = "components")
     public ObservableList<Component> getComponents() {
         return components;
     }

@@ -23,17 +23,18 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Cancel">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Menu">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
+            <Button fx:id="loadButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onLoad" text="Load" />
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" text="Save">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#onContinue" text="Continue">
+            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#onContinue" text="Finish">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

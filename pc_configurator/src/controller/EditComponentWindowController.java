@@ -71,7 +71,7 @@ public class EditComponentWindowController implements Initializable {
 
     @FXML
     private void onUpdate(ActionEvent event) {
-        component.setQuantity(new SimpleIntegerProperty(newQuantity));
+        component.setQuantityProperty(new SimpleIntegerProperty(newQuantity));
         column.setVisible(false);
         column.setVisible(true);
         onCancel(event);

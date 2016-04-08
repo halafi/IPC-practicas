@@ -5,11 +5,11 @@ import es.upv.inf.Product.Category;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,14 +24,15 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import model.Component;
 import model.Pc;
-import services.DatabaseService;
 
 /**
  * FXML Controller class
@@ -73,6 +74,8 @@ public class ConfigurationWindowController implements Initializable {
     private Button editComponentButton;
     @FXML
     private Button addComponentButton;
+    @FXML
+    private Button loadButton;
 
     /**
      * Initializes the controller class.
@@ -149,23 +152,27 @@ public class ConfigurationWindowController implements Initializable {
         editComponentButton.disableProperty().bind(
                 Bindings.equal(-1, componentTable.getSelectionModel().selectedIndexProperty())
         );
+
+        pcNameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                pc.setName(newValue);
+            }
+        });
     }
 
     public void initStage(Stage stage, Pc pc) {
         this.pc = pc;
+
         this.componentTable.setItems(pc.getComponents());
         this.primaryStage = stage;
         this.previousScene = stage.getScene();
         this.previousSceneTitle = stage.getTitle();
         this.primaryStage.setTitle("TechDog PC Configurator");
-        ObservableList<Component> components = this.pc.getComponents();
-        List<Product> cases = DatabaseService.getProductByCategory(Category.CASE);
-        List<Product> speakers = DatabaseService.getProductByCategory(Category.SPEAKER);
-        List<Product> cpus = DatabaseService.getProductByCategory(Category.CPU);
-        components.add(new Component(cases.get(0), 1));
-        components.add(new Component(speakers.get(0), 1));
-        components.add(new Component(cpus.get(0), 1));
-        pc.setComponents(components);
+        if (pc.getName() == null) {
+            this.pc.setName("");
+        }
+        this.pcNameField.setText(pc.getName());
     }
 
     @FXML
@@ -188,16 +195,51 @@ public class ConfigurationWindowController implements Initializable {
 
     @FXML
     private void onSave(ActionEvent event) {
-        // Save to disk
         try {
-            File file = new File("test.xml"); // file name
-            JAXBContext jaxbContext = JAXBContext.newInstance(Pc.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(pc, file); // save to a file
-            jaxbMarshaller.marshal(pc, System.out); // echo to the console
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save file");
+            if (!pc.getName().equals("")) {
+                fileChooser.setInitialFileName(pc.getName() + ".xml");
+            } else {
+                fileChooser.setInitialFileName("noname_pc.xml");
+            }
+            File savedFile = fileChooser.showSaveDialog(primaryStage);
+            if (savedFile != null) {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Pc.class);
+                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                jaxbMarshaller.marshal(pc, savedFile); // save to a file
+                //jaxbMarshaller.marshal(pc, System.out); // echo to the console
+            }
         } catch (JAXBException e) {
+            Alert alert = new Alert(AlertType.ERROR, "Error saving file");
+            alert.showAndWait();
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onLoad(ActionEvent event) {
+        Pc loadedPc = null;
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Load file");
+
+            File loadedFile = fileChooser.showOpenDialog(null);
+            if (loadedFile != null) {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Pc.class);
+                Unmarshaller um = jaxbContext.createUnmarshaller();
+                loadedPc = (Pc) um.unmarshal(loadedFile);
+            }
+        } catch (JAXBException e) {
+            Alert alert = new Alert(AlertType.ERROR, "Error reading file");
+            alert.showAndWait();
+            e.printStackTrace();
+        }
+        if (loadedPc != null) {
+            pc = loadedPc;
+            componentTable.setItems(pc.getComponents());
+            pcNameField.setText(pc.getName());
         }
     }
 
