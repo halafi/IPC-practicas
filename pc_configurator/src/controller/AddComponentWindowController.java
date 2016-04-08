@@ -53,6 +53,9 @@ public class AddComponentWindowController implements Initializable {
         productQuantity.setMax(product.getStock());
         productQuantity.setMin(1);
         productQuantity.setValue(1);
+        if (product.getStock() == 1) {
+            productQuantity.setDisable(true);
+        }
 
         updateSummary();
 
@@ -73,20 +76,22 @@ public class AddComponentWindowController implements Initializable {
 
     @FXML
     private void onAdd(ActionEvent event) {
-        Component component = new Component(product, newQuantity);
-        boolean valid = true;
-        for (Component c : pc.getComponents()) {
-            if (c.getProductProperty().get().getCategory() == product.getCategory()) {
-                valid = false;
-                Alert alert = new Alert(AlertType.ERROR, product.getCategory() + " is already in the budget");
-                alert.showAndWait();
-                break;
+        if (newQuantity > 0) {
+            Component component = new Component(product, newQuantity);
+            boolean valid = true;
+            for (Component c : pc.getComponents()) {
+                if (c.getProductProperty().get().getCategory() == product.getCategory()) {
+                    valid = false;
+                    Alert alert = new Alert(AlertType.ERROR, product.getCategory() + " is already in the budget");
+                    alert.showAndWait();
+                    break;
+                }
             }
+            if (valid) {
+                pc.getComponents().add(component);
+            }
+            onCancel(event);
         }
-        if (valid) {
-            pc.getComponents().add(component);
-        }
-        onCancel(event);
     }
 
     /**

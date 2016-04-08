@@ -21,7 +21,7 @@
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Label>
-            <Slider fx:id="productQuantity" max="50.0" minorTickCount="1" prefWidth="200.0" showTickLabels="true" showTickMarks="true" />
+            <Slider fx:id="productQuantity" majorTickUnit="1.0" max="50.0" minorTickCount="0" prefWidth="200.0" snapToTicks="true" />
          </children></HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="350.0">
          <VBox.margin>

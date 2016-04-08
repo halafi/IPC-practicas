@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -284,8 +285,10 @@ public class ConfigurationWindowController implements Initializable {
 
     @FXML
     private void onCancel(ActionEvent event) {
-        this.primaryStage.setTitle(this.previousSceneTitle);
-        this.primaryStage.setScene(this.previousScene);
+        //this.primaryStage.setTitle(this.previousSceneTitle);
+        //this.primaryStage.setScene(this.previousScene);
+        Node node = (Node) event.getSource();
+        node.getScene().getWindow().hide();
     }
 
     @FXML

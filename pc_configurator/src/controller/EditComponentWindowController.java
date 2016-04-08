@@ -27,7 +27,7 @@ public class EditComponentWindowController implements Initializable {
     private Component component;
     private Integer newQuantity;
     private TableColumn<Component, ?> column;
-    
+
     @FXML
     private Slider productQuantity;
     @FXML
@@ -52,6 +52,9 @@ public class EditComponentWindowController implements Initializable {
         productQuantity.setMax(component.getProductProperty().get().getStock());
         productQuantity.setMin(1);
         productQuantity.setValue(component.getQuantityProperty().doubleValue());
+        if (component.getProductProperty().get().getStock() == 1) {
+            productQuantity.setDisable(true);
+        }
         updateSummary();
 
         productQuantity.valueProperty().addListener(new ChangeListener<Number>() {
@@ -71,10 +74,12 @@ public class EditComponentWindowController implements Initializable {
 
     @FXML
     private void onUpdate(ActionEvent event) {
-        component.setQuantityProperty(new SimpleIntegerProperty(newQuantity));
-        column.setVisible(false);
-        column.setVisible(true);
-        onCancel(event);
+        if (newQuantity > 0) {
+            component.setQuantityProperty(new SimpleIntegerProperty(newQuantity));
+            column.setVisible(false);
+            column.setVisible(true);
+            onCancel(event);
+        }
     }
 
     /**

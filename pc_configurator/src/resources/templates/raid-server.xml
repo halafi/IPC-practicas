@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pc>
+    <components>
+        <product>
+            <category>CPU</category>
+            <description>cpu intel 1151 i7 6700k 4x4 0ghz 8mb box</description>
+            <price>364.21</price>
+            <stock>3</stock>
+        </product>
+        <quantity>2</quantity>
+    </components>
+    <components>
+        <product>
+            <category>MOTHERBOARD</category>
+            <description>gigabyte z170x.gam.g1 1151 4ddr4 64gb hdmi+th</description>
+            <price>501.82</price>
+            <stock>12</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>SCREEN</category>
+            <description>asus 27 pg27aq wled ips 4k gsynk mm 4ms dp+hdmi</description>
+            <price>752.07</price>
+            <stock>1</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>HDD_SSD</category>
+            <description>crucial ct1000mx200ssd1 mx200 ssd 1tb 2.5  sata3</description>
+            <price>350.5</price>
+            <stock>2</stock>
+        </product>
+        <quantity>2</quantity>
+    </components>
+    <components>
+        <product>
+            <category>HDD</category>
+            <description>w.digital hd 6tb 3.5 wd60efrx sata3 64mb red nas</description>
+            <price>250.0</price>
+            <stock>148</stock>
+        </product>
+        <quantity>8</quantity>
+    </components>
+    <components>
+        <product>
+            <category>POWER_SUPPLY</category>
+            <description>thermaltake fuente 850w dps gold toughpower</description>
+            <price>156.69</price>
+            <stock>1</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>CASE</category>
+            <description>thermaltake caja cubo m atx core x2 lcs</description>
+            <price>103.31</price>
+            <stock>4</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>FAN</category>
+            <description>nox vent disipador hummer h 100 85mm alum negro</description>
+            <price>8.84</price>
+            <stock>48</stock>
+        </product>
+        <quantity>14</quantity>
+    </components>
+    <components>
+        <product>
+            <category>RAM</category>
+            <description>modulo ddr4 8gb pc2133 kingston hyperx fury black</description>
+            <price>43.22</price>
+            <stock>41</stock>
+        </product>
+        <quantity>4</quantity>
+    </components>
+    <components>
+        <product>
+            <category>GPU</category>
+            <description>msi vga nvidia gtx 960 gaming 4gb ddr5</description>
+            <price>216.61</price>
+            <stock>38</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <name>raid-server</name>
+</pc>

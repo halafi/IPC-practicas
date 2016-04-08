@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pc>
+    <components>
+        <product>
+            <category>SPEAKER</category>
+            <description>woxter altavoz 5w minibass bt24 bluetooth fucsia</description>
+            <price>17.93</price>
+            <stock>2</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>HDD</category>
+            <description>hd 3 5 3tb s ata 3 wd 64mb desktop blue</description>
+            <price>94.21</price>
+            <stock>3</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>HDD_SSD</category>
+            <description>kingston ms200 ssd 1.8 120gb  msata 6gbps</description>
+            <price>58.26</price>
+            <stock>1</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>POWER_SUPPLY</category>
+            <description>tacens radix vii ag 600w pfc activo 14cm 80+silver</description>
+            <price>46.12</price>
+            <stock>1</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>RAM</category>
+            <description>crucial ddr2 2gb 667hz cl5 pc2 5300</description>
+            <price>25.45</price>
+            <stock>7</stock>
+        </product>
+        <quantity>2</quantity>
+    </components>
+    <components>
+        <product>
+            <category>SCREEN</category>
+            <description>asus ve198t.j led mm 250cd 5ms 1000.1 vga+dvi negr</description>
+            <price>74.88</price>
+            <stock>9</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>MOTHERBOARD</category>
+            <description>asus m5a78l.m.lx3 am3+ 2ddr3 16gb 760g gblan matx</description>
+            <price>46.69</price>
+            <stock>4</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>CPU</category>
+            <description>amd fx 6300 3 5 ghz 14mb socket am3</description>
+            <price>99.59</price>
+            <stock>12</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>GPU</category>
+            <description>gigabyte gtx750ti gddr5 4gb 128bits 2hdmi+2dvi</description>
+            <price>133.97</price>
+            <stock>8</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>KEYBOARD</category>
+            <description>ozone teclado gaming blade membrana 10 macros</description>
+            <price>50.5</price>
+            <stock>52</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>CASE</category>
+            <description>b move caja minitorre matx trim 450w negra</description>
+            <price>33.8</price>
+            <stock>25</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>FAN</category>
+            <description>base refrigeradora nox kaze</description>
+            <price>11.07</price>
+            <stock>3</stock>
+        </product>
+        <quantity>3</quantity>
+    </components>
+    <name>amdGaming</name>
+</pc>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pc>
+    <components>
+        <product>
+            <category>CPU</category>
+            <description>cpu intel 1150 i5 4690k 4x3 5ghz 6mb box hd 4600</description>
+            <price>216.69</price>
+            <stock>1</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>RAM</category>
+            <description>modulo ddr4 8gb pc2133 kingston hyperx fury black</description>
+            <price>43.22</price>
+            <stock>41</stock>
+        </product>
+        <quantity>2</quantity>
+    </components>
+    <components>
+        <product>
+            <category>HDD_SSD</category>
+            <description>kingston ssd sv300 2.5 240gb sata3</description>
+            <price>75.54</price>
+            <stock>6</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>MOTHERBOARD</category>
+            <description>asus b150m.a 1151 4ddr4 64gb vga+dvi+hdmi 6sata3</description>
+            <price>71.57</price>
+            <stock>5</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>GPU</category>
+            <description>msi gtx980ti gddr5 6gb 384bits dvi+hdmi+3dp gaming</description>
+            <price>702.56</price>
+            <stock>1</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <components>
+        <product>
+            <category>CASE</category>
+            <description>caja torre talius drakko blanca tal drakkow</description>
+            <price>37.52</price>
+            <stock>9</stock>
+        </product>
+        <quantity>1</quantity>
+    </components>
+    <name>i5-16gb</name>
+</pc>

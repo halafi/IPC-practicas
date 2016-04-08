@@ -37,4 +37,9 @@ public class Pc {
         this.components = components;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }
