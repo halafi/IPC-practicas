@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Component;
+import util.NumberUtils;
 
 /**
  * FXML Controller class
@@ -86,9 +87,8 @@ public class EditComponentWindowController implements Initializable {
      * Update summary text with total price.
      */
     public void updateSummary() {
-        Double totalPriceTruncated = new BigDecimal(newQuantity * component.getProductProperty().get().getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         summaryText.setText("Price: " + newQuantity + " x "
                 + component.getProductProperty().get().getPrice() + " = "
-                + totalPriceTruncated);
+                + NumberUtils.roundDouble(newQuantity * component.getProductProperty().get().getPrice(), 2));
     }
 }

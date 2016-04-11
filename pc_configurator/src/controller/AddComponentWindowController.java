@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Component;
 import model.Pc;
+import util.NumberUtils;
 
 /**
  * FXML Controller class
@@ -98,10 +99,9 @@ public class AddComponentWindowController implements Initializable {
      * Update summary text with total price.
      */
     public void updateSummary() {
-        Double totalPriceTruncated = new BigDecimal(newQuantity * product.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         summaryText.setText("Price: " + newQuantity + " x "
                 + product.getPrice() + " = "
-                + totalPriceTruncated);
+                + NumberUtils.roundDouble(newQuantity * product.getPrice(), 2));
     }
 
 }

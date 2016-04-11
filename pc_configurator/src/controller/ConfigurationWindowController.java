@@ -43,8 +43,6 @@ import model.Pc;
 public class ConfigurationWindowController implements Initializable {
 
     private Stage primaryStage;
-    private Scene previousScene;
-    private String previousSceneTitle;
     private Pc pc;
 
     @FXML
@@ -84,6 +82,7 @@ public class ConfigurationWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         descriptionColumn.textProperty().set("Description");
+        stockColumn.textProperty().set("Stock");
         categoryColumn.textProperty().set("Category");
         amountColumn.textProperty().set("Quantity");
         priceColumn.textProperty().set("Unit Price");
@@ -167,8 +166,6 @@ public class ConfigurationWindowController implements Initializable {
 
         this.componentTable.setItems(pc.getComponents());
         this.primaryStage = stage;
-        this.previousScene = stage.getScene();
-        this.previousSceneTitle = stage.getTitle();
         this.primaryStage.setTitle("TechDog PC Configurator");
         if (pc.getName() == null) {
             this.pc.setName("");
@@ -279,14 +276,23 @@ public class ConfigurationWindowController implements Initializable {
             alert.setContentText("PC needs at least one:\n* Motherboard\n* Case\n* CPU\n* RAM\n* GPU\n* HDD or SDD");
             alert.showAndWait();
         } else {
+            try {
+                FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/finalConfigurationWindow.fxml"));
+                Parent root = (Parent) myLoader.load();
+                FinalConfigurationWindowController confController = myLoader.<FinalConfigurationWindowController>getController();
+                confController.initStage(primaryStage, pc);
 
+                Scene scene = new Scene(root);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @FXML
     private void onCancel(ActionEvent event) {
-        //this.primaryStage.setTitle(this.previousSceneTitle);
-        //this.primaryStage.setScene(this.previousScene);
         Node node = (Node) event.getSource();
         node.getScene().getWindow().hide();
     }
