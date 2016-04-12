@@ -1,17 +1,17 @@
 package controller;
 
 import es.upv.inf.Product;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,6 +19,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Component;
@@ -198,6 +199,20 @@ public class FinalConfigurationWindowController implements Initializable {
 
     @FXML
     private void onPrint(ActionEvent event) {
+        Node node = new Circle(100, 200, 200);
+        print(node);
+    }
+
+    public void print(final Node node) {
+        Printer printer = Printer.getDefaultPrinter();
+
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null) {
+            boolean success = job.printPage(node);
+            if (success) {
+                job.endJob();
+            }
+        }
     }
 
 }

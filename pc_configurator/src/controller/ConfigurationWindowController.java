@@ -276,17 +276,26 @@ public class ConfigurationWindowController implements Initializable {
             alert.setContentText("PC needs at least one:\n* Motherboard\n* Case\n* CPU\n* RAM\n* GPU\n* HDD or SDD");
             alert.showAndWait();
         } else {
-            try {
-                FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/finalConfigurationWindow.fxml"));
-                Parent root = (Parent) myLoader.load();
-                FinalConfigurationWindowController confController = myLoader.<FinalConfigurationWindowController>getController();
-                confController.initStage(primaryStage, pc);
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setHeaderText("Are you sure you want to finish building your pc? ");
+            alert.setContentText("You wont be able to edit your pc.");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                alert.hide();   
+                try {
+                    FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/finalConfigurationWindow.fxml"));
+                    Parent root = (Parent) myLoader.load();
+                    FinalConfigurationWindowController confController = myLoader.<FinalConfigurationWindowController>getController();
+                    confController.initStage(primaryStage, pc);
 
-                Scene scene = new Scene(root);
-                primaryStage.setScene(scene);
-                primaryStage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    Scene scene = new Scene(root);
+                    primaryStage.setScene(scene);
+                    // show hide to resize window properly
+                    primaryStage.hide();
+                    primaryStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
