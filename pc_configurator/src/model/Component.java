@@ -38,8 +38,8 @@ public class Component {
     }
 
     @XmlElement(name = "product")
-    public ProductWrapper getProduct() {
-        return new ProductWrapper(product.get());
+    public Product getProduct() {
+        return product.get();
     }
 
     @XmlElement(name = "quantity")
@@ -51,9 +51,8 @@ public class Component {
         this.quantity.set(quantity);
     }
 
-    public void setProduct(ProductWrapper product) {
-        Product p = new Product(product.getDescription(), product.getPrice(), product.getStock(), product.getCategory());
-        this.product.set(p);
+    public void setProduct(Product product) {
+        this.product.set(product);
     }
 
     public void setProductProperty(ObjectProperty<Product> product) {
