@@ -9,20 +9,21 @@ import javafx.stage.Stage;
 
 /**
  * Main application class.
- * 
+ *
  * @author filip
  */
 public class App extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
+        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/mainWindow.fxml"));
         Parent root = (Parent) loader.load();
-        
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("TechDog PC Builder");
-        
+
         MainWindowController mainController = loader.<MainWindowController>getController();
         mainController.initStage(stage);
         stage.show();
@@ -34,5 +35,5 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

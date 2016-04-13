@@ -186,7 +186,7 @@ public class FinalConfigurationWindowController implements Initializable {
         componentTable.setItems(cpts);
         primaryStage = stage;
         primaryStage.setTitle("TechDog PC Final Overview");
-        pcNameText.setText(pc.getName() + " PC Summary");
+        pcNameText.setText("TechDog PC Builder (Pc name: "+ pc.getName() + ")");
         LocalDateTime timePoint = LocalDateTime.now();
         noticeLabel.setText("Made on: " + timePoint.toLocalDate().toString() + ", valid for 7 days.");
     }
@@ -199,7 +199,7 @@ public class FinalConfigurationWindowController implements Initializable {
 
     @FXML
     private void onPrint(ActionEvent event) {
-        Node node = new Circle(100, 200, 200);
+        Node node = (Node) event.getSource();
         print(node);
     }
 
