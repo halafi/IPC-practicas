@@ -10,8 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,12 +17,13 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Component;
 import model.FinalComponent;
 import model.Pc;
+import util.FXUtils;
 import util.NumberUtils;
 
 /**
@@ -52,8 +51,6 @@ public class FinalConfigurationWindowController implements Initializable {
     @FXML
     private TableColumn<FinalComponent, Product> categoryColumn;
     @FXML
-    private TableColumn<FinalComponent, Product> stockColumn;
-    @FXML
     private TableColumn<FinalComponent, Product> priceColumn;
     @FXML
     private TableColumn<FinalComponent, Integer> amountColumn;
@@ -73,10 +70,9 @@ public class FinalConfigurationWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         descriptionColumn.textProperty().set("Description");
         categoryColumn.textProperty().set("Category");
-        stockColumn.textProperty().set("Stock");
         amountColumn.textProperty().set("Quantity");
         priceColumn.textProperty().set("Unit Price");
-        vatColumn.textProperty().set("VAT (21%)");
+        vatColumn.textProperty().set("VAT");
         totalPriceColumn.textProperty().set("Total Price");
 
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getProduct());
@@ -118,20 +114,6 @@ public class FinalConfigurationWindowController implements Initializable {
                         setText(null);
                     } else {
                         setText(String.valueOf(item.getPrice()));
-                    }
-                }
-            };
-        });
-        stockColumn.setCellValueFactory(cellData -> cellData.getValue().getProduct());
-        stockColumn.setCellFactory(v -> {
-            return new TableCell<FinalComponent, Product>() {
-                @Override
-                protected void updateItem(Product item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(String.valueOf(item.getStock()));
                     }
                 }
             };
@@ -178,15 +160,15 @@ public class FinalConfigurationWindowController implements Initializable {
             priceWithVAT += fc.getTotalPriceWithVAT().doubleValue();
             priceWithoutVAT += fc.getTotalPriceWithoutVAT().doubleValue();
         }
-        priceWithoutVatInput.setText(String.valueOf(NumberUtils.roundDouble(priceWithoutVAT, 2)));
-        priceWithVatInput.setText(String.valueOf(NumberUtils.roundDouble(priceWithVAT, 2)));
+        priceWithoutVatInput.setText(String.valueOf(NumberUtils.roundDouble(priceWithoutVAT, 2))+ "€");
+        priceWithVatInput.setText(String.valueOf(NumberUtils.roundDouble(priceWithVAT, 2)) + "€");
         priceWithoutVatInput.setEditable(false);
         priceWithVatInput.setEditable(false);
         componentTable.setDisable(true);
         componentTable.setItems(cpts);
         primaryStage = stage;
         primaryStage.setTitle("TechDog PC Final Overview");
-        pcNameText.setText("TechDog PC Builder (Pc name: "+ pc.getName() + ")");
+        pcNameText.setText("TechDog PC Builder (Pc name: " + pc.getName() + ")");
         LocalDateTime timePoint = LocalDateTime.now();
         noticeLabel.setText("Made on: " + timePoint.toLocalDate().toString() + ", valid for 7 days.");
     }
@@ -199,20 +181,19 @@ public class FinalConfigurationWindowController implements Initializable {
 
     @FXML
     private void onPrint(ActionEvent event) {
-        Node node = (Node) event.getSource();
-        print(node);
-    }
-
-    public void print(final Node node) {
-        Printer printer = Printer.getDefaultPrinter();
-
-        PrinterJob job = PrinterJob.createPrinterJob();
-        if (job != null) {
-            boolean success = job.printPage(node);
-            if (success) {
-                job.endJob();
-            }
+        String toPrint = "\n" + pcNameText.getText() + "\n";
+        toPrint += "------------------------------------------------------------------";
+        for (FinalComponent fc : componentTable.getItems()) {
+            toPrint += "\n" + fc.getQuantity().get() + "x " +fc.getProduct().get().getDescription() + "\n"  
+                    + "Price (Without/With VAT): "+ fc.getTotalPriceWithoutVAT().get() + "€ / " +NumberUtils.roundDouble(fc.getTotalPriceWithVAT().get(), 2) + "€"
+                    + "\n";
         }
+        toPrint += "------------------------------------------------------------------";
+        toPrint += "\nPC Price (Without/With VAT): "+ priceWithoutVatInput.getText() + "€ / " + priceWithVatInput.getText() + "€";
+        toPrint += "\n"+ noticeLabel.getText();
+        Text textToPrint = new Text(toPrint);
+        textToPrint.setFont(new Font(10));
+        FXUtils.print(textToPrint);
     }
 
 }

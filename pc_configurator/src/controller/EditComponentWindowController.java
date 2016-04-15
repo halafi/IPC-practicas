@@ -88,7 +88,7 @@ public class EditComponentWindowController implements Initializable {
      */
     public void updateSummary() {
         summaryText.setText("Price: " + newQuantity + " x "
-                + component.getProductProperty().get().getPrice() + " = "
-                + NumberUtils.roundDouble(newQuantity * component.getProductProperty().get().getPrice(), 2));
+                + component.getProductProperty().get().getPrice() + "€ = "
+                + NumberUtils.roundDouble(newQuantity * component.getProductProperty().get().getPrice(), 2) + "€");
     }
 }

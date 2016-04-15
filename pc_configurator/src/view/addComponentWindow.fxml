@@ -33,12 +33,12 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="90.0" prefHeight="30.0" prefWidth="350.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel">
+            <Button mnemonicParsing="false" onAction="#onCancel" prefWidth="80.0" text="Cancel">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onAdd" text="Add">
+            <Button mnemonicParsing="false" onAction="#onAdd" prefWidth="80.0" text="Add">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

@@ -14,7 +14,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchComponentsController">
    <top>
-      <VBox minHeight="100.0" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox minHeight="100.0" prefHeight="120.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                <children>
@@ -86,7 +86,7 @@
       </VBox>
    </top>
    <center>
-      <TableView fx:id="productTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="productTable" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="descriptionColumn" prefWidth="240.0" text="Description" />
           <TableColumn fx:id="priceColumn" text="Price" />
@@ -98,12 +98,12 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" minHeight="50.0" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Close">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" prefWidth="80.0" text="Close">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAdd" text="Add">
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAdd" prefWidth="80.0" text="Add">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

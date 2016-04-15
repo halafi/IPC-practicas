@@ -23,18 +23,18 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Close">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" prefWidth="80.0" text="Close">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="loadButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onLoad" text="Load" />
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" text="Save">
+            <Button fx:id="loadButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onLoad" prefWidth="80.0" text="Load" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" prefWidth="80.0" text="Save">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#onContinue" text="Finish">
+            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#onContinue" prefWidth="80.0" text="Finish">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
@@ -45,22 +45,22 @@
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="pcNameField" minWidth="435.0" prefWidth="435.0" promptText="PC name">
+            <TextField fx:id="pcNameField" minWidth="370.0" promptText="PC name">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="removeComponentButton" mnemonicParsing="false" onAction="#onRemoveComponent" text="Remove">
+            <Button fx:id="removeComponentButton" mnemonicParsing="false" onAction="#onRemoveComponent" prefWidth="80.0" text="Remove">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="editComponentButton" mnemonicParsing="false" onAction="#onEditComponent" text="Edit">
+            <Button fx:id="editComponentButton" mnemonicParsing="false" onAction="#onEditComponent" prefWidth="80.0" text="Edit">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="addComponentButton" mnemonicParsing="false" onAction="#odAddComponent" text="Add Component">
+            <Button fx:id="addComponentButton" mnemonicParsing="false" onAction="#odAddComponent" prefWidth="150.0" text="Add Component">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

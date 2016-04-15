@@ -100,8 +100,8 @@ public class AddComponentWindowController implements Initializable {
      */
     public void updateSummary() {
         summaryText.setText("Price: " + newQuantity + " x "
-                + product.getPrice() + " = "
-                + NumberUtils.roundDouble(newQuantity * product.getPrice(), 2));
+                + product.getPrice() + "€ = "
+                + NumberUtils.roundDouble(newQuantity * product.getPrice(), 2) + "€");
     }
 
 }
