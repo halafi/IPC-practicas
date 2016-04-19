@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
@@ -8,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurationWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfigurationWindowController">
    <center>
       <TableView fx:id="componentTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
@@ -23,13 +27,13 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" prefWidth="80.0" text="Close">
+            <Button fx:id="loadButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onLoad" prefWidth="80.0" text="Load" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" prefWidth="80.0" text="Save">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="loadButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onLoad" prefWidth="80.0" text="Load" />
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" prefWidth="80.0" text="Save">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" prefWidth="80.0" text="Close">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

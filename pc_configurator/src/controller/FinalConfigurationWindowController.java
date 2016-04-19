@@ -185,7 +185,7 @@ public class FinalConfigurationWindowController implements Initializable {
         toPrint += "------------------------------------------------------------------";
         for (FinalComponent fc : componentTable.getItems()) {
             toPrint += "\n" + fc.getQuantity().get() + "x " +fc.getProduct().get().getDescription() + "\n"  
-                    + "Price (Without/With VAT): "+ fc.getTotalPriceWithoutVAT().get() + "€ / " +NumberUtils.roundDouble(fc.getTotalPriceWithVAT().get(), 2) + "€"
+                    + "Price (Without/With VAT): "+ NumberUtils.roundDouble(fc.getTotalPriceWithoutVAT().get(), 2) + "€ / " +NumberUtils.roundDouble(fc.getTotalPriceWithVAT().get(), 2) + "€"
                     + "\n";
         }
         toPrint += "------------------------------------------------------------------";

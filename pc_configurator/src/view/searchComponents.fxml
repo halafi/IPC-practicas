@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -12,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchComponentsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="540.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchComponentsController">
    <top>
       <VBox minHeight="100.0" prefHeight="120.0" BorderPane.alignment="CENTER">
          <children>
@@ -98,12 +102,12 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" minHeight="50.0" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" prefWidth="80.0" text="Close">
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAdd" prefWidth="80.0" text="Add">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAdd" prefWidth="80.0" text="Add">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" prefWidth="80.0" text="Close">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
