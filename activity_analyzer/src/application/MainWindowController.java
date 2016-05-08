@@ -2,21 +2,28 @@ package application;
 
 import java.io.File;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javax.xml.bind.JAXBContext;
@@ -70,6 +77,10 @@ public class MainWindowController implements Initializable {
     private NumberAxis speedXAxis;
     @FXML
     private PieChart zonesPieChart;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private ChoiceBox<String> xAxisSelector;
 
     /**
      * Initializes the controller class.
@@ -92,53 +103,137 @@ public class MainWindowController implements Initializable {
         cadDistanceLineChart.setCreateSymbols(false);
         speedDistanceLineChart.setLegendVisible(false);
         speedDistanceLineChart.setCreateSymbols(false);
+        zonesPieChart.setLegendVisible(false);
+        xAxisSelector.setItems(FXCollections.observableArrayList("Distance [Km]", "Time [hh:mm:ss]"));
+        xAxisSelector.getSelectionModel().selectFirst();
+        xAxisSelector.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+            }
+        });
     }
 
     @FXML
     private void loadGPXFile(ActionEvent event) throws JAXBException {
+        // WITHOUT TASK
+        /*FileChooser fileChooser = new FileChooser();
+         File file = fileChooser.showOpenDialog(loadButton.getScene().getWindow());
+         if (file != null) {
+         statusLabel.getScene().setCursor(Cursor.WAIT);
+         tabPane.setDisable(true);
+         loadButton.setDisable(true);
+         statusLabel.setText("Loading " + file.getName());
+         JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
+         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+         JAXBElement<Object> root = (JAXBElement<Object>) unmarshaller.unmarshal(file);
+         GpxType gpx = (GpxType) root.getValue();
+         if (gpx != null) {
+         trackData = new TrackData(new Track(gpx.getTrk().get(0)));
+         showTrackInfo(trackData);
+         } else {
+         statusLabel.setText("Error loading GPX from " + file.getName());
+         }
+         statusLabel.setText("GPX successfully loaded");
+         loadButton.setDisable(false);
+         statusLabel.getScene().setCursor(Cursor.DEFAULT);
+         updateCharts();
+         tabPane.setDisable(false);
+         }*/
+
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(loadButton.getScene().getWindow());
         if (file != null) {
-            loadButton.setDisable(true);
             statusLabel.getScene().setCursor(Cursor.WAIT);
+            tabPane.setDisable(true);
+            loadButton.setDisable(true);
             statusLabel.setText("Loading " + file.getName());
-            JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            JAXBElement<Object> root = (JAXBElement<Object>) unmarshaller.unmarshal(file);
-            GpxType gpx = (GpxType) root.getValue();
-            if (gpx != null) {
-                trackData = new TrackData(new Track(gpx.getTrk().get(0)));
-                showTrackInfo(trackData);
-            } else {
-                statusLabel.setText("Error loading GPX from " + file.getName());
-            }
-            statusLabel.setText("GPX successfully loaded");
-            loadButton.setDisable(false);
-            statusLabel.getScene().setCursor(Cursor.DEFAULT);
-            updateCharts();
+            Task<Integer> task = new Task<Integer>() {
+                @Override
+                protected Integer call() throws JAXBException {
+                    JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
+                    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+                    JAXBElement<Object> root = (JAXBElement<Object>) unmarshaller.unmarshal(file);
+                    GpxType gpx = (GpxType) root.getValue();
+                    if (gpx != null) {
+                        trackData = new TrackData(new Track(gpx.getTrk().get(0)));
+                        return 0;
+                    }
+                    return -1;
+                }
+            };
+            task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+                    new EventHandler<WorkerStateEvent>() {
+                        @Override
+                        public void handle(WorkerStateEvent t) {
+                            if (task.getValue() == -1) {
+                                statusLabel.setText("Error loading GPX from " + file.getName());
+                            }
+                            statusLabel.setText("GPX successfully loaded");
+                            showTrackInfo(trackData);
+                            updateCharts();
+                            loadButton.setDisable(false);
+                            statusLabel.getScene().setCursor(Cursor.DEFAULT);
+                            tabPane.setDisable(false);
+                        }
+                    });
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            th.start();
         }
+
     }
-    
+
     private void updateCharts() {
         XYChart.Series<Number, Number> heightDistance = new XYChart.Series();
         XYChart.Series<Number, Number> hrDistance = new XYChart.Series();
         XYChart.Series<Number, Number> cadenceDistance = new XYChart.Series();
         XYChart.Series<Number, Number> speedDistance = new XYChart.Series();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        int maxHeartrate = trackData.getMaxHeartrate();
+        System.out.println(String.format("%f %f %f %f %f", maxHeartrate * 0.6, maxHeartrate * 0.6, maxHeartrate * 0.7, maxHeartrate * 0.8, maxHeartrate * 0.9));
+        Double z1peak = maxHeartrate * 0.6;
+        Double z2peak = maxHeartrate * 0.7;
+        Double z3peak = maxHeartrate * 0.8;
+        Double z4peak = maxHeartrate * 0.9;
+        Double z5peak = maxHeartrate * 1.0;
+        Duration z1 = Duration.ZERO;
+        Duration z2 = Duration.ZERO;
+        Duration z3 = Duration.ZERO;
+        Duration z4 = Duration.ZERO;
+        Duration z5 = Duration.ZERO;
         ObservableList<Chunk> chunks = trackData.getChunks();
         Boolean add = true;
         Double distance = 0.0;
         Double elevation = 0.0;
-        for (Chunk c: chunks) {
+        for (Chunk c : chunks) {
             distance = distance + c.getDistance();
             elevation = elevation + c.getAscent() - c.getDescend();
             if (elevation < 0) {
                 elevation = 0.0;
             }
-            heightDistance.getData().add(new XYChart.Data<>(distance/1000, elevation));
-            hrDistance.getData().add(new XYChart.Data<>(distance/1000, c.getAvgHeartRate()));
-            cadenceDistance.getData().add(new XYChart.Data<>(distance/1000, c.getAvgCadence()));
-            speedDistance.getData().add(new XYChart.Data<>(distance/1000, c.getSpeed() * 3.6));
+            double avgHeartRate = c.getAvgHeartRate();
+            if (avgHeartRate < z1peak) {
+                z1 = z1.plus(c.getMovingTime());
+            } else if (avgHeartRate < z2peak && avgHeartRate >= z1peak) {
+                z2 = z2.plus(c.getMovingTime());
+            } else if (avgHeartRate < z3peak && avgHeartRate >= z2peak) {
+                z3 = z3.plus(c.getMovingTime());
+            } else if (avgHeartRate < z4peak && avgHeartRate >= z3peak) {
+                z4 = z4.plus(c.getMovingTime());
+            } else if (avgHeartRate >= z4peak) {
+                z5 = z5.plus(c.getMovingTime());
+            }
+            heightDistance.getData().add(new XYChart.Data<>(distance / 1000, elevation));
+            hrDistance.getData().add(new XYChart.Data<>(distance / 1000, c.getAvgHeartRate()));
+            cadenceDistance.getData().add(new XYChart.Data<>(distance / 1000, c.getAvgCadence()));
+            speedDistance.getData().add(new XYChart.Data<>(distance / 1000, c.getSpeed() * 3.6));
         };
+        pieChartData.add(new PieChart.Data("Z1 Recovery", z1.getSeconds()));
+        pieChartData.add(new PieChart.Data("Z2 Endurance", z2.getSeconds()));
+        pieChartData.add(new PieChart.Data("Z3 Tempo", z3.getSeconds()));
+        pieChartData.add(new PieChart.Data("Z4 Threshold", z4.getSeconds()));
+        pieChartData.add(new PieChart.Data("Z5 Anaerobic", z5.getSeconds()));
         heightDistanceAreaChart.getData().clear();
         hrDistanceLineChart.getData().clear();
         cadDistanceLineChart.getData().clear();
@@ -147,6 +242,7 @@ public class MainWindowController implements Initializable {
         hrDistanceLineChart.getData().add(hrDistance);
         cadDistanceLineChart.getData().add(cadenceDistance);
         speedDistanceLineChart.getData().add(speedDistance);
+        zonesPieChart.setData(pieChartData);
     }
 
     private void showTrackInfo(TrackData trackData) {
@@ -165,7 +261,7 @@ public class MainWindowController implements Initializable {
         textInfo.appendText(String.format("\nAverage Cadence: %d", trackData.getAverageCadence()));
         textInfo.appendText(String.format("\nMaximum Cadence: %d", trackData.getMaxCadence()));
         /*ObservableList<Chunk> chunks = trackData.getChunks();
-        textInfo.appendText("\nTrack containing " + chunks.size() + " points");*/
+         textInfo.appendText("\nTrack containing " + chunks.size() + " points");*/
     }
 
 }
