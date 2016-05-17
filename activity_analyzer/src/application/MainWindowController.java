@@ -3,6 +3,8 @@ package application;
 import java.io.File;
 import java.net.URL;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
@@ -23,6 +26,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
@@ -52,29 +56,29 @@ public class MainWindowController implements Initializable {
     @FXML
     private TextArea textInfo;
     @FXML
-    private AreaChart<Number, Number> heightDistanceAreaChart;
+    private AreaChart<String, Number> heightDistanceAreaChart;
     @FXML
     private NumberAxis elevationYAxis;
     @FXML
-    private NumberAxis elevationXAxis;
+    private CategoryAxis elevationXAxis;
     @FXML
-    private LineChart<Number, Number> hrDistanceLineChart;
+    private LineChart<String, Number> hrDistanceLineChart;
     @FXML
     private NumberAxis hrYAxis;
     @FXML
-    private NumberAxis hrXAxis;
+    private CategoryAxis hrXAxis;
     @FXML
-    private LineChart<Number, Number> cadDistanceLineChart;
+    private LineChart<String, Number> cadDistanceLineChart;
     @FXML
     private NumberAxis cadYAxis;
     @FXML
-    private NumberAxis cadXAxis;
+    private CategoryAxis cadXAxis;
     @FXML
-    private LineChart<Number, Number> speedDistanceLineChart;
+    private LineChart<String, Number> speedDistanceLineChart;
     @FXML
     private NumberAxis speedYAxis;
     @FXML
-    private NumberAxis speedXAxis;
+    private CategoryAxis speedXAxis;
     @FXML
     private PieChart zonesPieChart;
     @FXML
@@ -87,10 +91,6 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        elevationXAxis.setLabel("Distance [Km]");
-        hrXAxis.setLabel("Distance [Km]");
-        cadXAxis.setLabel("Distance [Km]");
-        speedXAxis.setLabel("Distance [Km]");
         elevationYAxis.setLabel("Elevation [m.s.l.]");
         hrYAxis.setLabel("Heartrate [bpm]");
         cadYAxis.setLabel("Cadence [rpm]");
@@ -109,9 +109,33 @@ public class MainWindowController implements Initializable {
         xAxisSelector.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println(newValue);
+                //System.out.println(newValue);
+                updateCharts();
+                /*elevationXAxis.setLabel(newValue);
+                 hrXAxis.setLabel(newValue);
+                 cadXAxis.setLabel(newValue);
+                 speedXAxis.setLabel(newValue);*/
+
             }
         });
+        xAxisSelector.setVisible(false);
+        tabPane.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Tab>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab) {
+
+                        if (newTab.getId() != null) {
+                            String id = newTab.getId();
+                            if (id.equals("overviewTab") || id.equals("zonesTab")) {
+                                xAxisSelector.setVisible(false);
+                            }
+                        } else {
+                            xAxisSelector.setVisible(true);
+                        }
+
+                    }
+                }
+        );
     }
 
     @FXML
@@ -185,10 +209,10 @@ public class MainWindowController implements Initializable {
     }
 
     private void updateCharts() {
-        XYChart.Series<Number, Number> heightDistance = new XYChart.Series();
-        XYChart.Series<Number, Number> hrDistance = new XYChart.Series();
-        XYChart.Series<Number, Number> cadenceDistance = new XYChart.Series();
-        XYChart.Series<Number, Number> speedDistance = new XYChart.Series();
+        XYChart.Series<String, Number> heightDistance = new XYChart.Series();
+        XYChart.Series<String, Number> hrDistance = new XYChart.Series();
+        XYChart.Series<String, Number> cadenceDistance = new XYChart.Series();
+        XYChart.Series<String, Number> speedDistance = new XYChart.Series();
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         int maxHeartrate = trackData.getMaxHeartrate();
         System.out.println(String.format("%f %f %f %f %f", maxHeartrate * 0.6, maxHeartrate * 0.6, maxHeartrate * 0.7, maxHeartrate * 0.8, maxHeartrate * 0.9));
@@ -206,8 +230,9 @@ public class MainWindowController implements Initializable {
         Boolean add = true;
         Double distance = 0.0;
         Double elevation = 0.0;
+        int i = 0;
+        int step = chunks.size() / 100;
         for (Chunk c : chunks) {
-            distance = distance + c.getDistance();
             elevation = elevation + c.getAscent() - c.getDescend();
             if (elevation < 0) {
                 elevation = 0.0;
@@ -224,10 +249,28 @@ public class MainWindowController implements Initializable {
             } else if (avgHeartRate >= z4peak) {
                 z5 = z5.plus(c.getMovingTime());
             }
-            heightDistance.getData().add(new XYChart.Data<>(distance / 1000, elevation));
-            hrDistance.getData().add(new XYChart.Data<>(distance / 1000, c.getAvgHeartRate()));
-            cadenceDistance.getData().add(new XYChart.Data<>(distance / 1000, c.getAvgCadence()));
-            speedDistance.getData().add(new XYChart.Data<>(distance / 1000, c.getSpeed() * 3.6));
+            if (xAxisSelector.getValue().equals("Distance [Km]")) {
+                distance = distance + c.getDistance();
+                System.out.println();
+                if (i % step == 0) { // affects accuracy
+                    String category = String.format("%.0f", distance / 1000);
+                    heightDistance.getData().add(new XYChart.Data<>(category, elevation));
+                    hrDistance.getData().add(new XYChart.Data<>(category, c.getAvgHeartRate()));
+                    cadenceDistance.getData().add(new XYChart.Data<>(category, c.getAvgCadence()));
+                    speedDistance.getData().add(new XYChart.Data<>(category, c.getSpeed() * 3.6));
+                }
+
+            } else if (xAxisSelector.getValue().equals("Time [hh:mm:ss]")) {
+                LocalDateTime time = c.getFirstPoint().getTime();
+                if (i % step == 0) { // affects accuracy
+                    String category = String.format(time.format(DateTimeFormatter.ofPattern("HH:mm")));
+                    heightDistance.getData().add(new XYChart.Data<>(category, elevation));
+                    hrDistance.getData().add(new XYChart.Data<>(category, c.getAvgHeartRate()));
+                    cadenceDistance.getData().add(new XYChart.Data<>(category, c.getAvgCadence()));
+                    speedDistance.getData().add(new XYChart.Data<>(category, c.getSpeed() * 3.6));
+                }
+            }
+            i++;
         };
         pieChartData.add(new PieChart.Data("Z1 Recovery", z1.getSeconds()));
         pieChartData.add(new PieChart.Data("Z2 Endurance", z2.getSeconds()));
@@ -258,8 +301,8 @@ public class MainWindowController implements Initializable {
         textInfo.appendText(String.format("\nMinimum Heartrate: %d bpm", trackData.getMinHeartRate()));
         textInfo.appendText(String.format("\nAverage Heartrate: %d bpm", trackData.getAverageHeartrate()));
         textInfo.appendText(String.format("\nMaximum Heartrate: %d bpm", trackData.getMaxHeartrate()));
-        textInfo.appendText(String.format("\nAverage Cadence: %d", trackData.getAverageCadence()));
-        textInfo.appendText(String.format("\nMaximum Cadence: %d", trackData.getMaxCadence()));
+        textInfo.appendText(String.format("\nAverage Cadence: %d rpm", trackData.getAverageCadence()));
+        textInfo.appendText(String.format("\nMaximum Cadence: %d rpm", trackData.getMaxCadence()));
         /*ObservableList<Chunk> chunks = trackData.getChunks();
          textInfo.appendText("\nTrack containing " + chunks.size() + " points");*/
     }

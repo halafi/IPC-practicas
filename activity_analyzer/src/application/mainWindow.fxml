@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
@@ -19,7 +20,7 @@
    <center>
       <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Overview">
+          <Tab fx:id="overviewTab" text="Overview">
                <content>
                   <TextArea fx:id="textInfo" prefHeight="200.0" prefWidth="200.0">
                      <padding>
@@ -28,67 +29,72 @@
                   </TextArea>
                </content>
           </Tab>
-          <Tab text="Elevation Profile" />
-            <Tab text="Heartrate Profile">
-               <content>
-                  <LineChart fx:id="hrDistanceLineChart">
-                    <xAxis>
-                      <NumberAxis fx:id="hrXAxis" side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis fx:id="hrYAxis" side="LEFT" />
-                    </yAxis>
-                  </LineChart>
-               </content>
-            </Tab>
-            <Tab text="Cadence Profile">
-               <content>
-                  <LineChart fx:id="cadDistanceLineChart">
-                    <xAxis>
-                      <NumberAxis fx:id="cadXAxis" side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis fx:id="cadYAxis" side="LEFT" />
-                    </yAxis>
-                  </LineChart>
-               </content>
-            </Tab>
-            <Tab text="Speed Profile">
-               <content>
-                  <LineChart fx:id="speedDistanceLineChart">
-                    <xAxis>
-                      <NumberAxis fx:id="speedXAxis" side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis fx:id="speedYAxis" side="LEFT" />
-                    </yAxis>
-                  </LineChart>
-               </content>
-            </Tab>
-            <Tab text="Zones">
-               <content>
-                  <PieChart fx:id="zonesPieChart" />
-               </content>
-            </Tab>
-            <Tab text="Elevation Profile">
+          <Tab text="Elevation Profile">
                <content>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <AreaChart fx:id="heightDistanceAreaChart">
                           <xAxis>
-                            <NumberAxis fx:id="elevationXAxis" side="BOTTOM" />
+                            <CategoryAxis fx:id="elevationXAxis" side="BOTTOM" />
                           </xAxis>
                           <yAxis>
                             <NumberAxis fx:id="elevationYAxis" side="LEFT" />
                           </yAxis>
                         </AreaChart>
-                        <ChoiceBox prefWidth="150.0" fx:id="xAxisSelector">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </ChoiceBox>
                      </children>
                   </VBox>
+               </content></Tab>
+            <Tab text="Heartrate Profile">
+               <content>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <LineChart fx:id="hrDistanceLineChart">
+                          <xAxis>
+                            <CategoryAxis fx:id="hrXAxis" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="hrYAxis" side="LEFT" />
+                          </yAxis>
+                        </LineChart>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab text="Cadence Profile">
+               <content>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <LineChart fx:id="cadDistanceLineChart">
+                          <xAxis>
+                            <CategoryAxis fx:id="cadXAxis" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="cadYAxis" side="LEFT" />
+                          </yAxis>
+                        </LineChart>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab text="Speed Profile">
+               <content>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <LineChart fx:id="speedDistanceLineChart">
+                          <xAxis>
+                            <CategoryAxis fx:id="speedXAxis" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="speedYAxis" side="LEFT" />
+                          </yAxis>
+                        </LineChart>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab fx:id="zonesTab" text="Zones">
+               <content>
+                  <PieChart fx:id="zonesPieChart" />
                </content>
             </Tab>
         </tabs>
@@ -115,4 +121,11 @@
          </children>
       </VBox>
    </top>
+   <bottom>
+      <ChoiceBox prefWidth="150.0" BorderPane.alignment="CENTER" fx:id="xAxisSelector">
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+      </ChoiceBox>
+   </bottom>
 </BorderPane>
